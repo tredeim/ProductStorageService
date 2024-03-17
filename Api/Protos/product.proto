@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+option csharp_namespace = "Api";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+package product;
+
+enum ProductType {
+  UNKNOWN = 0;
+  GENERAL = 1;
+  HOUSEHOLD_CHEMICALS = 2;
+  APPLIANCES = 3;
+  FOOD = 4;
+}
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+  double weight = 4;
+  ProductType type = 5;
+  string creation_date = 6; // ISO 8601 формат
+  int32 warehouseId = 7;
+}
+
+message AddProductRequest 
+{
+    string name = 1;
+    double price = 2;
+    double weight = 3;
+    ProductType type = 4;
+    string creation_date = 5;
+    int32 warehouse_id = 6;
+}
+
+message AddProductResponse 
+{
+     Product product = 1;
+}
+
+
+message GetProductRequest 
+{
+    int32 id = 1;
+}
+
+message GetProductResponse 
+{
+    Product product = 1;
+}
+
+message UpdateProductPriceRequest 
+{
+    int32 id = 1;
+    double new_price = 2;
+}
+
+message UpdateProductPriceResponse 
+{
+    Product product = 1;
+}
+
+message ListProductRequest 
+{
+    int32 pageSize = 1; 
+    int32 page = 2;
+    string date = 5;
+    ProductType type = 6;
+    int32 warehouse = 7;
+}
+
+message ListProductResponse 
+{
+    repeated Product products = 1;
+}
+
+
+
+service ProductService
+{
+    rpc Add(AddProductRequest) returns (AddProductResponse){
+        option (google.api.http) = {
+            get: "/v1/product/add"
+        };
+    };
+    rpc List(ListProductRequest) returns (ListProductResponse){
+      option (google.api.http) = {
+        get: "/v1/product/list"
+        };
+    };
+    rpc Get(GetProductRequest) returns (GetProductResponse){
+      option (google.api.http) = {
+        get: "/v1/product/get"
+      };
+    };
+    rpc UpdatePrice(UpdateProductPriceRequest) returns (UpdateProductPriceResponse){
+      option (google.api.http) = {
+        get: "/v1/product/updatePrice"
+      };
+    };
+}
