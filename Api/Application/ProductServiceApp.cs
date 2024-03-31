@@ -38,12 +38,15 @@ namespace Api.Application
             };
         }
 
-        public ProductDto Get(int productId)
+        public ProductDto? Get(int productId)
         {
             var product = _productRepository.Get(productId);
+
+            if (product is null) return null;
+
             return new ProductDto
             {
-                Id = product.Id,
+                Id = product.Id, 
                 Name = product.Name,
                 Price = product.Price,
                 Weight = product.Weight,
@@ -56,6 +59,7 @@ namespace Api.Application
         public ProductDto UpdatePrice(int productId, double newPrice)
         {
             var product = _productRepository.UpdatePrice(productId, newPrice);
+            if (product is null) return null;
             return new ProductDto
             {
                 Id = product.Id,

@@ -1,4 +1,4 @@
-﻿namespace Api.Application
+﻿ namespace Api.Application
 {
     public static class ServiceCollectionExtensions
     {

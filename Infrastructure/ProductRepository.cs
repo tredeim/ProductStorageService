@@ -23,15 +23,26 @@ namespace Infrastructure
             return product;
         }
 
-        public Product Get(int productId)
+        public Product? Get(int productId)
         {
-            return _storage[productId];
+            if (_storage.TryGetValue(productId, out var product))
+            {
+                return product;
+            }
+
+            return null;
         }
 
-        public Product UpdatePrice(int productId, double newPrice)
+        public Product? UpdatePrice(int productId, double newPrice)
         {
-            _storage[productId].Price = newPrice;
-            return _storage[productId];
+            var product = Get(productId);
+            if (product != null)
+            {
+                product.Price = newPrice;
+                return product;
+            }
+
+            return null;
         }
 
         public List<Product> List(int pageSize, int page, DateOnly? date , ProductType? type, int? warehouse)
